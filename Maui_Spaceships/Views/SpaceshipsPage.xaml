@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+			 xmlns:vm="clr-namespace:Maui_Spaceships.ViewModels"
+			 xmlns:models="using:Maui_Spaceships.Models"
+             x:Class="Maui_Spaceships.Views.SpaceshipsPage"
+			 x:DataType="vm:SpaceshipsViewModel">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem>
+        </ToolbarItem>
+        <ToolbarItem>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+    <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding RefreshingCommand}">
+        <CollectionView ItemsSource="{Binding Items}" RemainingItemsThreshold="10" RemainingItemsThresholdReachedCommand="{Binding LoadMoreCommand}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:SpaceshipItem">
+                    <Grid Padding="2" HeightRequest="120">
+                        <Frame Grid.Row="0" Background="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary}}">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:SpaceshipsViewModel}}, Path=GoToDetailsCommand}" CommandParameter="{Binding .}" />
+                            </Frame.GestureRecognizers>
+                        </Frame>
+
+                        <Grid Margin="6,4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="30*"/>
+                                <ColumnDefinition Width="60*"/>
+                                <ColumnDefinition Width="8*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <Image Grid.Column="0"  Grid.Row="0" Grid.RowSpan="4" Source="invalid.png" Margin="4" HeightRequest="100" WidthRequest="100"/>
+
+                            <Label Grid.Column="1" Grid.Row="0" Text="{Binding DisplayName}" FontSize="Large" TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}" LineBreakMode="TailTruncation"/>
+                            <Label Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" Text="{Binding MachineState}"/>
+                            <Label Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2" Text="{Binding UpdateMessage}"/>
+                            <Label Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="3" Text="{Binding RegistrationState}" HorizontalOptions="End" VerticalOptions="End"/>
+
+                            <Image Grid.Column="2" Grid.Row="0"  HorizontalOptions="End" VerticalOptions="Start">
+                                <Image.Source>
+                                    <FontImageSource FontFamily="FontAwesomeRegular" Glyph="" Size="25"/>
+                                </Image.Source>
+                            </Image>
+                        </Grid>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </RefreshView>
+</ContentPage>
